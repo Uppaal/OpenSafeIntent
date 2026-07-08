@@ -8,7 +8,7 @@
     <img src="https://img.shields.io/badge/Project_Webpage-1DA1F2?logo=google-chrome&logoColor=white&color=0A4D8C" alt="Project Webpage">
   </a>
   <a href="https://huggingface.co/datasets/Uppaal/OpenSafeIntent">
-    <img src="https://img.shields.io/badge/Checkpoints-F1C232?logo=huggingface&logoColor=white&color=BFA000" alt="Dataset">
+    <img src="https://img.shields.io/badge/Dataset-F1C232?logo=huggingface&logoColor=white&color=BFA000" alt="Dataset">
   </a>
 </p>
 
