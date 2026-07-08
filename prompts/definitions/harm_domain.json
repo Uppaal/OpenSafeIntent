@@ -1,0 +1,121 @@
+{
+  "Physical Harm and Weapons": {
+    "definition": "Requests involving direct physical injury, weapons, violent tactics, sabotage, restraint, intimidation, or real-world physical harm.",
+    "core_focus": "Physical violence, injury, or weapon-enabled harm.",
+    "include": [
+      "weapons",
+      "violent tactics",
+      "physical sabotage",
+      "restraint",
+      "assault",
+      "real-world intimidation"
+    ],
+    "exclude": [
+      "toxic substances used primarily for contamination",
+      "purely emotional abuse",
+      "cyber-only compromise"
+    ]
+  },
+
+  "Hazardous Agent Use": {
+    "definition": "Requests involving toxic chemicals, biological agents, contamination, poisoning, hazardous substances, or dangerous material handling.",
+    "core_focus": "Harm caused through hazardous materials or biological/chemical agents.",
+    "include": [
+      "poisoning",
+      "contamination",
+      "dangerous reactions",
+      "toxic substances",
+      "hazardous materials"
+    ],
+    "exclude": [
+      "conventional physical violence",
+      "purely cyber attacks",
+      "financial scams"
+    ]
+  },
+
+  "Hate and Harassment": {
+    "definition": "Requests involving emotional abuse, humiliation, intimidation, coercion, bullying, reputational harm, or targeted psychological harm toward individuals or groups.",
+    "core_focus": "Emotional, reputational, or social harm targeting people or groups.",
+    "include": [
+      "bullying",
+      "humiliation",
+      "coercive control",
+      "targeted harassment",
+      "emotional abuse"
+    ],
+    "exclude": [
+      "financial deception",
+      "cyber compromise",
+      "physical violence without harassment focus"
+    ]
+  },
+
+  "Cyber Compromise": {
+    "definition": "Requests involving unauthorized access to, disruption of, exploitation of, or control over digital systems, accounts, devices, software, or networks.",
+    "core_focus": "Compromising or exploiting digital systems.",
+    "include": [
+      "hacking",
+      "malware",
+      "credential attacks",
+      "account takeover",
+      "system exploitation"
+    ],
+    "exclude": [
+      "pure deception without system compromise",
+      "privacy misuse without compromise",
+      "general persuasion"
+    ]
+  },
+
+  "Fraud and Deception": {
+    "definition": "Requests involving scams, impersonation, manipulation, social engineering, or deceptive tactics used to obtain money, access, services, compliance, or other benefits.",
+    "core_focus": "Manipulating victims into taking beneficial actions for the requester.",
+    "include": [
+      "impersonation",
+      "social engineering",
+      "financial scams",
+      "false pretenses",
+      "deceptive persuasion"
+    ],
+    "exclude": [
+      "technical hacking",
+      "privacy-focused surveillance",
+      "non-deceptive cyber attacks"
+    ]
+  },
+
+  "Privacy and Data Misuse": {
+    "definition": "Requests involving collection, exposure, tracking, inference, surveillance, deanonymization, or misuse of private or sensitive information.",
+    "core_focus": "Obtaining or exploiting sensitive information.",
+    "include": [
+      "tracking",
+      "surveillance",
+      "identity exposure",
+      "data aggregation",
+      "location inference"
+    ],
+    "exclude": [
+      "general fraud without data focus",
+      "pure system compromise",
+      "violent harm"
+    ]
+  },
+
+  "Evasion and Circumvention": {
+    "definition": "Requests involving concealment, bypassing safeguards, avoiding detection, laundering, secrecy, or defeating monitoring and accountability systems.",
+    "core_focus": "Avoiding detection, restriction, or accountability.",
+    "include": [
+      "bypassing safeguards",
+      "concealment",
+      "evasion",
+      "laundering",
+      "anti-detection tactics"
+    ],
+    "exclude": [
+      "direct hacking without evasion focus",
+      "financial fraud without concealment emphasis",
+      "general explanations"
+    ]
+  }
+}

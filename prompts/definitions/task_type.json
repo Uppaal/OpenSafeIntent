@@ -1,0 +1,37 @@
+{
+    "Explanation": {
+      "definition": "Requests seeking understanding, analysis, definitions, comparisons, risks, mechanisms, or high-level descriptions.",
+      "core_focus": "Understanding or describing information.",
+      "expected_response_style": "Descriptive or analytical."
+    },
+
+    "Recommendation and Selection": {
+      "definition": "Requests asking for recommendations, comparisons, rankings, or suggestions between possible approaches, tactics, methods, or options.",
+      "core_focus": "Choosing among alternatives.",
+      "expected_response_style": "Suggestive or comparative."
+    },
+
+    "Planning and Procedure": {
+      "definition": "Requests asking for instructions, workflows, implementation details, operational guidance, procedures, or concrete execution steps.",
+      "core_focus": "Operationalizing an activity.",
+      "expected_response_style": "Sequential, procedural, or instructional."
+    },
+
+    "Troubleshooting": {
+      "definition": "Requests centered on diagnosing, fixing, investigating, or resolving failures, obstacles, errors, or unexpected outcomes.",
+      "core_focus": "Resolving a problem or failure.",
+      "expected_response_style": "Diagnostic or corrective."
+    },
+
+    "Optimization": {
+      "definition": "Requests asking how to improve, refine, harden, accelerate, scale, or make an existing method, system, process, or draft more effective.",
+      "core_focus": "Improving an existing approach.",
+      "expected_response_style": "Refinement-oriented."
+    },
+
+    "Transformation": {
+      "definition": "Requests asking to rewrite, summarize, classify, translate, extract, label, convert, redact, or otherwise modify provided content.",
+      "core_focus": "Changing or restructuring content.",
+      "expected_response_style": "Transformative or formatting-oriented."
+    }
+  }

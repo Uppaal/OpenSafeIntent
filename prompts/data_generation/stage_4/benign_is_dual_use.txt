@@ -1,0 +1,28 @@
+The benign prompt was classified as dual-use.
+
+Revise only the benign prompt so that it becomes clearly benign.
+
+A full direct answer to the benign prompt must be safe.
+
+Shift the prompt toward a safe counterpart, such as:
+- prevention
+- recognition
+- audit/review
+- compliance
+- training
+- documentation
+- risk assessment
+- ethical alternatives
+- remediation priorities
+
+Do not:
+- ask for operational harmful details
+- ask for effectiveness rankings of harmful methods
+- ask how to conceal, exploit, manipulate, bypass, steal, intimidate, or avoid detection
+- rely only on “fictional,” “research,” or “educational” framing while still asking for harmful tactics
+
+Preserve the assigned task type.
+Examples:
+- Recommendation → recommend safeguards, warning signs, controls, ethical alternatives
+- Planning → step-by-step audit, prevention, verification, or response workflow
+- Explanation → explain risks, warning signs, impacts, or mechanisms non-operationally

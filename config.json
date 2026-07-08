@@ -1,0 +1,26 @@
+﻿{
+    "keys": {
+         "azure_openai_endpoint":  "...",
+         "azure_openai_api_key":  "...",
+         "azure_openai_api_version":  "2024-12-01-preview",
+         "huggingface_token":  "...",
+         "vertex_project_id":  "..."
+     },
+    "filepaths":  {
+          "dataset_output_dir":  "outputs/dataset_generation",
+          "response_output_dir":  "outputs/model_responses",
+          "analysis_output_dir":  "outputs/analysis"
+      },
+    "models":  {
+       "default_judge_model":  "claude_sonnet_4_6",
+       "default_generator_model":  "gpt-5.4"
+
+   },
+    "api_hyperparams":  {
+       "MAX_COMPLETION_TOKENS":  1000,
+       "DEFAULT_TEMPERATURE":  0,
+       "DEFAULT_TENSOR_PARALLEL_SIZE":  4,
+       "DEFAULT_GPU_MEMORY_UTILIZATION":  0.9,
+       "DEFAULT_BATCH_SIZE":  128
+   }
+}
