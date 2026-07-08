@@ -16,7 +16,7 @@ This repository provides the implementation and dataset used in [OpenSafeIntent:
 
 
 <p align="center">
-<img src="OpenSafeIntent/example-datapoint.png" alt="drawing" width="800"><br>
+<img src="example-datapoint.png" alt="drawing" width="800"><br>
 <i><b>Figure.</b> 
  Structure of an OpenSafeIntent prompt-set. Each prompt-set fixes the harm domain, task type, and
 underlying task, then varies only the prompt intent across benign, dual-use, and malicious versions. The dual-use prompt is additionally paired with a plausible benign use, misuse risk, and paraphrases for consistency evaluation.</i>
