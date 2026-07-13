@@ -1,9 +1,11 @@
 <h1 align="center">OpenSafeIntent: Evaluating Intent-Calibrated Safe Completion Across Dual-Use Prompt Sets</h1>
 
 <p align="center">
+  <!--
   <a href="https://arxiv.org/abs/2607.02047">
     <img src="https://img.shields.io/badge/arXiv-2405.13967-B31B1B?logo=arxiv&logoColor=white" alt="arXiv">
   </a>
+  -->
   <a href="https://uppaal.github.io/projects/open-safe-intent/blog.html">
     <img src="https://img.shields.io/badge/Project_Webpage-1DA1F2?logo=google-chrome&logoColor=white&color=0A4D8C" alt="Project Webpage">
   </a>
@@ -12,7 +14,9 @@
   </a>
 </p>
 
-This repository provides the implementation and dataset used in [OpenSafeIntent: Evaluating Intent-Calibrated Safe Completion Across Dual-Use Prompt Sets](https://arxiv.org/abs/2607.02047). 
+
+
+<!--This repository provides the implementation and dataset used in [OpenSafeIntent: Evaluating Intent-Calibrated Safe Completion Across Dual-Use Prompt Sets](https://arxiv.org/abs/2607.02047).  -->
 
 
 <p align="center">
