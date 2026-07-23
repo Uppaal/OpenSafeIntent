@@ -1,7 +1,7 @@
 from pathlib import Path
 from collections import Counter
 from llm_calls.api_models import get_api_responses_batch
-from OpenSafeIntent.project_config import DEFAULT_JUDGE_MODEL, VERTEX_PROJECT_ID
+from project_config import DEFAULT_JUDGE_MODEL, VERTEX_PROJECT_ID
 
 try:
     from .utils import extract_json_object_with_keys, load_text
@@ -12,7 +12,7 @@ except ImportError:
 INTENT_CLASSIFICATION_PROMPT_PATH = (
     Path(__file__).resolve().parents[1]
     / "prompts"
-    / "metrics"
+    / "data_generation"
     / "prompt_intent_classification.txt"
 )
 PROMPT_FIELDS = ("benign_prompt", "dual_use_prompt", "malicious_prompt")

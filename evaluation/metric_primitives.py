@@ -13,7 +13,7 @@ if str(REPO_ROOT) not in sys.path:
 
 from dataset_generation.utils import load_json, load_text, save_json
 from llm_calls.api_models import get_api_responses_batch
-from OpenSafeIntent.project_config import (
+from project_config import (
     DEFAULT_JUDGE_MODEL,
     RESPONSE_OUTPUT_DIR,
     VERTEX_PROJECT_ID,

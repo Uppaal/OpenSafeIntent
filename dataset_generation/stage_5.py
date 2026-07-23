@@ -12,7 +12,7 @@ if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
 from llm_calls.api_models import get_api_responses_batch
-from OpenSafeIntent.project_config import (
+from project_config import (
     DATASET_OUTPUT_DIR,
     DEFAULT_GENERATOR_MODEL,
     DEFAULT_TEMPERATURE,
@@ -47,7 +47,7 @@ STAGE_4_INPUT_PATH = STAGE_4_OUTPUT_DIR / "stage_4_passed.json"
 STAGE_5_OUTPUT_DIR = DATASET_OUTPUT_DIR / "stage_5"
 STAGE_5_PASSED_OUTPUT_PATH = STAGE_5_OUTPUT_DIR / "stage_5_passed.json"
 STAGE_5_DEDUPLICATED_OUTPUT_PATH = STAGE_5_OUTPUT_DIR / "stage_5_deduplicated.json"
-DEFAULT_MAX_COMPLETION_TOKENS = 512
+DEFAULT_MAX_COMPLETION_TOKENS = 4096
 MAX_ROUGE_L_SIMILARITY = 0.7
 PROMPT_FIELDS = ("benign_prompt", "dual_use_prompt", "malicious_prompt")
 VALID_QUALITY_DECISIONS = {"keep", "drop"}
@@ -356,7 +356,7 @@ def generate_stage_5_dataset(
         max_completion_tokens=max_completion_tokens,
     )
     save_json(passed_rows, passed_output_path)
-    print(f"Saved stage 5 passed outputs to: {Path(passed_output_path).resolve()}")
+    print(f"Saved stage 5 passed pilot_dataset to: {Path(passed_output_path).resolve()}")
     print_label_distributions(passed_rows, "Stage 5 Passed Datapoints")
 
     deduplicated_rows, deduplication_stats = deduplicate_rows(
@@ -365,7 +365,7 @@ def generate_stage_5_dataset(
     )
     save_json(deduplicated_rows, deduplicated_output_path)
     print(
-        "Saved stage 5 deduplicated outputs to: "
+        "Saved stage 5 deduplicated pilot_dataset to: "
         f"{Path(deduplicated_output_path).resolve()}"
     )
     print_label_distributions(deduplicated_rows, "Stage 5 Deduplicated Datapoints")

@@ -11,7 +11,7 @@ if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
 from llm_calls.api_models import get_api_responses_batch
-from OpenSafeIntent.project_config import (
+from project_config import (
     DATASET_OUTPUT_DIR,
     DEFAULT_GENERATOR_MODEL,
     DEFAULT_TEMPERATURE,
@@ -38,10 +38,10 @@ except ImportError:
     )
 
 
-TOTAL_PER_COMBINATION = 100  # 5
-DEFAULT_N_SUMMARIES = 10  # 2
+TOTAL_PER_COMBINATION = 50
+DEFAULT_N_SUMMARIES = 10
 DEFAULT_MAX_BACKFILL_CALLS = 10
-DEFAULT_MAX_COMPLETION_TOKENS = MAX_COMPLETION_TOKENS
+DEFAULT_MAX_COMPLETION_TOKENS = max(MAX_COMPLETION_TOKENS, 5000)
 MAX_ROUGE_L_SIMILARITY = 0.7
 PROMPT_DIR = REPO_ROOT / "prompts"
 DATA_GENERATION_PROMPT_DIR = PROMPT_DIR / "data_generation"
@@ -457,8 +457,8 @@ def calculate_balancing_stats(
     }
 
 
-def print_balancing_stats(stats):
-    print("\nBalancing Stats")
+def print_balancing_stats(stats, title="Balancing Stats"):
+    print(f"\n{title}")
     print("-" * 120)
     print(
         f"{'Task Type':<30} "
@@ -553,6 +553,7 @@ def report_balancing_stats(
     generated_counts,
     harm_domains=HARM_DOMAINS,
     task_types=TASK_TYPES,
+    title="Balancing Stats",
 ):
     stats = calculate_balancing_stats(
         original_counts=original_counts,
@@ -560,7 +561,7 @@ def report_balancing_stats(
         harm_domains=harm_domains,
         task_types=task_types,
     )
-    print_balancing_stats(stats)
+    print_balancing_stats(stats, title=title)
     return stats["rows"]
 
 
@@ -582,6 +583,14 @@ def balance_stage_1_outputs(
     generated_counts = Counter()
 
     label_pairs = list(product(task_types, harm_domains))
+    report_balancing_stats(
+        original_counts=original_counts,
+        generated_counts=generated_counts,
+        harm_domains=harm_domains,
+        task_types=task_types,
+        title="Pre-Backfill Distribution",
+    )
+
     for task_type, harm_domain in tqdm(label_pairs, desc="Balancing label pairs"):
         current_count = counts[(task_type, harm_domain)]
         if current_count >= total_per_combination:
@@ -613,12 +622,13 @@ def balance_stage_1_outputs(
 
     output_rows = format_output_datapoints(balanced_rows)
     save_json(output_rows, output_path)
-    print(f"Saved balanced stage 2 outputs to: {Path(output_path).resolve()}")
+    print(f"Saved balanced stage 2 pilot_dataset to: {Path(output_path).resolve()}")
     stats = report_balancing_stats(
         original_counts=original_counts,
         generated_counts=generated_counts,
         harm_domains=harm_domains,
         task_types=task_types,
+        title="Post-Backfill Distribution",
     )
 
     return {
@@ -630,7 +640,7 @@ def balance_stage_1_outputs(
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(description="Balance stage 1 outputs by label pair.")
+    parser = argparse.ArgumentParser(description="Balance stage 1 pilot_dataset by label pair.")
     parser.add_argument("--input", type=Path, default=STAGE_1_OUTPUT_PATH)
     parser.add_argument("--output", type=Path, default=BALANCED_OUTPUT_PATH)
     parser.add_argument(
@@ -651,6 +661,12 @@ def parse_args():
         help="Maximum LLM calls to make for one underfilled label pair.",
     )
     parser.add_argument(
+        "--max-completion-tokens",
+        type=int,
+        default=DEFAULT_MAX_COMPLETION_TOKENS,
+        help="Maximum tokens to request from the API model for each backfill call.",
+    )
+    parser.add_argument(
         "--strict-backfill",
         action="store_true",
         help="Abort if a label pair cannot be backfilled after the configured attempts.",
@@ -666,5 +682,6 @@ if __name__ == "__main__":
         total_per_combination=args.total_per_combination,
         n_summaries=args.n_summaries,
         max_backfill_calls=args.max_backfill_calls,
+        max_completion_tokens=args.max_completion_tokens,
         strict_backfill=args.strict_backfill,
     )

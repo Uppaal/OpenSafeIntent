@@ -55,16 +55,16 @@ gcloud auth application-default set-quota-project "$(python -c 'from project_con
 
 ## Dataset Generation
 
-| Stage          | Purpose                                                            | Command                                                                                                  |
-|----------------|--------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------|
-| 1              | Annotate seed prompts from `PKU-Alignment/PKU-SafeRLHF`.           | `python dataset_generation/stage_1.py --num-datapoints 2`                                                |
-| 2              | Balance stage 1 rows by harm domain and task type.                 | `python dataset_generation/stage_2.py --total-per-combination 5 --n-summaries 2 --max-backfill-calls 10` |
-| 3              | Generate benign, dual-use, and malicious prompt triplets.          | `python dataset_generation/stage_3.py`                                                                   |
-| 3 verification | Classify the intent of each generated prompt.                      | `python dataset_generation/stage_3_verification.py`                                                      |
-| 4              | Repair rows with incorrect intent labels.                          | `python dataset_generation/stage_4.py`                                                                   |
-| 4 verification | Refresh stale or incorrect verification labels after repair.       | `python dataset_generation/stage_4_verification.py`                                                      |
-| 5              | Quality-check and deduplicate stage 4 rows.                        | `python dataset_generation/stage_5.py`                                                                   |
-| 6              | Add `dual_use_paraphrases` and write the final evaluation dataset. | `python dataset_generation/augment_dual_use_paraphrases.py`                                              |
+| Stage          | Purpose                                                            | Command                                                          |
+|----------------|--------------------------------------------------------------------|------------------------------------------------------------------|
+| 1              | Annotate seed prompts from `PKU-Alignment/PKU-SafeRLHF`.           | `python dataset_generation/stage_1.py --num-datapoints 2`        |
+| 2              | Balance stage 1 rows by harm domain and task type.                 | `python dataset_generation/stage_2.py --total-per-combination 5` |
+| 3              | Generate benign, dual-use, and malicious prompt triplets.          | `python dataset_generation/stage_3.py`                           |
+| 3 verification | Classify the intent of each generated prompt.                      | `python dataset_generation/stage_3_verification.py`              |
+| 4              | Repair rows with incorrect intent labels.                          | `python dataset_generation/stage_4.py`                           |
+| 4 verification | Refresh stale or incorrect verification labels after repair.       | `python dataset_generation/stage_4_verification.py`              |
+| 5              | Quality-check and deduplicate stage 4 rows.                        | `python dataset_generation/stage_5.py`                           |
+| 6              | Add `dual_use_paraphrases` and write the final evaluation dataset. | `python dataset_generation/stage_6.py`                           |
 
 
 ## Generating Model Responses for Evaluation

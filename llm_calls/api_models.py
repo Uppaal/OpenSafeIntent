@@ -1,10 +1,11 @@
 import re
+import sys
 import time
 from tqdm import tqdm
 from typing import Any, Callable, Dict, Iterable, List, Optional
 
 from llm_calls.models import DEFAULT_GENERATION_MODELS
-from OpenSafeIntent.project_config import (
+from project_config import (
     DEFAULT_GENERATOR_MODEL,
     MAX_COMPLETION_TOKENS,
     VERTEX_PROJECT_ID,
@@ -47,6 +48,10 @@ RETRYABLE_ERROR_MARKERS = (
     "temporarily unavailable",
     "try again later",
 )
+
+
+def log_progress(message):
+    tqdm.write(message, file=sys.stderr)
 
 
 def is_vertex_model(model_name):
@@ -370,7 +375,7 @@ def get_api_responses_batch(
                         filtered=True,
                     )
                     if log_failures:
-                        tqdm.write(
+                        log_progress(
                             f"Provider filtered prompt {index}: {result['error']}"
                         )
                     results.append(result)
@@ -382,7 +387,7 @@ def get_api_responses_batch(
                         retry_base_seconds=retry_base_seconds,
                         retry_max_seconds=retry_max_seconds,
                     )
-                    tqdm.write(
+                    log_progress(
                         "Transient provider error; retrying in "
                         f"{retry_delay} seconds: {summarize_error(error)}"
                     )
@@ -400,7 +405,7 @@ def get_api_responses_batch(
                     filtered=False,
                 )
                 if log_failures:
-                    tqdm.write(f"API prompt {index} failed: {result['error']}")
+                    log_progress(f"API prompt {index} failed: {result['error']}")
                 results.append(result)
                 break
 
@@ -429,7 +434,7 @@ def call_model_for_prompt(
                 retry_base_seconds=retry_base_seconds,
                 retry_max_seconds=retry_max_seconds,
             )
-            tqdm.write(
+            log_progress(
                 "Transient provider error; retrying in "
                 f"{retry_delay} seconds: {summarize_error(error)}"
             )

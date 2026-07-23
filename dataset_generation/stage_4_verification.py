@@ -9,7 +9,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
-from OpenSafeIntent.project_config import DATASET_OUTPUT_DIR
+from project_config import DATASET_OUTPUT_DIR
 
 try:
     from .intent_verification import (
@@ -132,13 +132,13 @@ def verify_stage_4_intents(
 
     save_json(output_rows, output_path)
     print(
-        "Saved stage 4 intent verification outputs to: "
+        "Saved stage 4 intent verification pilot_dataset to: "
         f"{Path(output_path).resolve()}"
     )
     passed_rows = get_stage_4_passed_rows(output_rows)
     stats["passed_rows"] = len(passed_rows)
     save_json(passed_rows, passed_output_path)
-    print(f"Saved stage 4 passed outputs to: {Path(passed_output_path).resolve()}")
+    print(f"Saved stage 4 passed pilot_dataset to: {Path(passed_output_path).resolve()}")
     print_stage_4_verification_summary(stats)
 
     distributions = calculate_decision_distributions(output_rows)

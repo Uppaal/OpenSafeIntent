@@ -224,11 +224,13 @@ class VertexLLMClient:
         }
 
     def _api_host(self, location: str) -> str:
-        return (
-            "aiplatform.googleapis.com"
-            if location == "global"
-            else f"{location}-aiplatform.googleapis.com"
-        )
+        if location == "global":
+            return "aiplatform.googleapis.com"
+        if location == "us":
+            return "aiplatform.us.rep.googleapis.com"
+        if location == "eu":
+            return "aiplatform.eu.rep.googleapis.com"
+        return f"{location}-aiplatform.googleapis.com"
 
     def _validate_no_deployed_endpoint(self, config: ModelConfig) -> None:
         suspicious_values = [config.model_id, config.location]
@@ -331,8 +333,9 @@ class VertexLLMClient:
         max_tokens: int,
         temperature: float,
     ) -> str:
+        api_host = self._api_host(config.location)
         url = (
-            f"https://{config.location}-aiplatform.googleapis.com/v1/"
+            f"https://{api_host}/v1/"
             f"projects/{self.project_id}/locations/{config.location}/"
             f"publishers/anthropic/models/{config.model_id}:rawPredict"
         )
@@ -341,9 +344,10 @@ class VertexLLMClient:
             "anthropic_version": "vertex-2023-10-16",
             "messages": [{"role": "user", "content": prompt}],
             "max_tokens": max_tokens,
-            "temperature": temperature,
             "stream": False,
         }
+        if config.supports_temperature:
+            payload["temperature"] = temperature
 
         response = requests.post(
             url,

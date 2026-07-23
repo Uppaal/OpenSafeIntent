@@ -8,11 +8,17 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
-from llm_calls.api_models import get_api_responses_batch
-from OpenSafeIntent.project_config import (
+from llm_calls.api_models import (
+    DEFAULT_MAX_RETRIES,
+    DEFAULT_RETRY_BASE_SECONDS,
+    DEFAULT_RETRY_MAX_SECONDS,
+    get_api_responses_batch,
+)
+from project_config import (
     DATASET_OUTPUT_DIR,
     DEFAULT_GENERATOR_MODEL,
     DEFAULT_TEMPERATURE,
+    MAX_COMPLETION_TOKENS,
 )
 
 try:
@@ -47,7 +53,7 @@ STAGE_2_OUTPUT_PATH = STAGE_2_OUTPUT_DIR / "stage_2_outputs.json"
 STAGE_2_TYPO_OUTPUT_PATH = STAGE_2_OUTPUT_DIR / "stage_2_outputs.json"
 STAGE_3_OUTPUT_DIR = DATASET_OUTPUT_DIR / "stage_3"
 STAGE_3_OUTPUT_PATH = STAGE_3_OUTPUT_DIR / "stage_3_outputs.json"
-DEFAULT_MAX_COMPLETION_TOKENS = 1500
+DEFAULT_MAX_COMPLETION_TOKENS = MAX_COMPLETION_TOKENS
 
 REQUIRED_RESPONSE_KEYS = (
     "underlying_topic",
@@ -80,12 +86,21 @@ def load_prompt_template(prompt_path=STAGE_3_PROMPT_PATH):
     return load_text(prompt_path)
 
 
-def get_required_api_response(prompt, max_completion_tokens=DEFAULT_MAX_COMPLETION_TOKENS):
+def get_required_api_response(
+    prompt,
+    max_completion_tokens=DEFAULT_MAX_COMPLETION_TOKENS,
+    max_retries=DEFAULT_MAX_RETRIES,
+    retry_base_seconds=DEFAULT_RETRY_BASE_SECONDS,
+    retry_max_seconds=DEFAULT_RETRY_MAX_SECONDS,
+):
     result = get_api_responses_batch(
         [prompt],
         model_name=DEFAULT_GENERATOR_MODEL,
         max_completion_tokens=max_completion_tokens,
         temperature=DEFAULT_TEMPERATURE,
+        max_retries=max_retries,
+        retry_base_seconds=retry_base_seconds,
+        retry_max_seconds=retry_max_seconds,
         raise_on_error=True,
     )[0]
     if not result["success"]:
@@ -173,6 +188,9 @@ def call_llm_for_prompt_triplet(
     harm_domain_definitions=None,
     task_type_definitions=None,
     max_completion_tokens=DEFAULT_MAX_COMPLETION_TOKENS,
+    max_retries=DEFAULT_MAX_RETRIES,
+    retry_base_seconds=DEFAULT_RETRY_BASE_SECONDS,
+    retry_max_seconds=DEFAULT_RETRY_MAX_SECONDS,
 ):
     prompt = build_stage_3_prompt(
         row=row,
@@ -183,6 +201,9 @@ def call_llm_for_prompt_triplet(
     raw_response = get_required_api_response(
         prompt,
         max_completion_tokens=max_completion_tokens,
+        max_retries=max_retries,
+        retry_base_seconds=retry_base_seconds,
+        retry_max_seconds=retry_max_seconds,
     )
     return parse_stage_3_response(raw_response)
 
@@ -289,6 +310,9 @@ def generate_stage_3_dataset(
     output_path=STAGE_3_OUTPUT_PATH,
     limit=None,
     max_completion_tokens=DEFAULT_MAX_COMPLETION_TOKENS,
+    max_retries=DEFAULT_MAX_RETRIES,
+    retry_base_seconds=DEFAULT_RETRY_BASE_SECONDS,
+    retry_max_seconds=DEFAULT_RETRY_MAX_SECONDS,
 ):
     input_path = Path(input_path or resolve_default_stage_2_input())
     output_path = Path(output_path)
@@ -306,13 +330,16 @@ def generate_stage_3_dataset(
                 harm_domain_definitions=harm_domain_definitions,
                 task_type_definitions=task_type_definitions,
                 max_completion_tokens=max_completion_tokens,
+                max_retries=max_retries,
+                retry_base_seconds=retry_base_seconds,
+                retry_max_seconds=retry_max_seconds,
             )
             output_rows.append(format_success_datapoint(row, generated_prompts))
         except Exception as error:
             output_rows.append(format_failure_datapoint(row, error))
 
     save_json(output_rows, output_path)
-    print(f"Saved stage 3 outputs to: {output_path.resolve()}")
+    print(f"Saved stage 3 pilot_dataset to: {output_path.resolve()}")
 
     status_counts, self_check_counts = calculate_stage_3_stats(
         output_rows,
@@ -332,7 +359,7 @@ def generate_stage_3_dataset(
 
 def parse_args():
     parser = argparse.ArgumentParser(
-        description="Generate benign/dual-use/malicious prompt triplets from stage 2 outputs."
+        description="Generate benign/dual-use/malicious prompt triplets from stage 2 pilot_dataset."
     )
     parser.add_argument("--input", type=Path, default=None)
     parser.add_argument("--output", type=Path, default=STAGE_3_OUTPUT_PATH)
@@ -348,6 +375,24 @@ def parse_args():
         default=DEFAULT_MAX_COMPLETION_TOKENS,
         help="Maximum tokens to request from the API model for each triplet.",
     )
+    parser.add_argument(
+        "--max-retries",
+        type=int,
+        default=DEFAULT_MAX_RETRIES,
+        help="Maximum retries for transient provider errors.",
+    )
+    parser.add_argument(
+        "--retry-base-seconds",
+        type=float,
+        default=DEFAULT_RETRY_BASE_SECONDS,
+        help="Initial retry delay for transient provider errors.",
+    )
+    parser.add_argument(
+        "--retry-max-seconds",
+        type=float,
+        default=DEFAULT_RETRY_MAX_SECONDS,
+        help="Maximum retry delay for transient provider errors.",
+    )
     return parser.parse_args()
 
 
@@ -358,4 +403,7 @@ if __name__ == "__main__":
         output_path=args.output,
         limit=args.limit,
         max_completion_tokens=args.max_completion_tokens,
+        max_retries=args.max_retries,
+        retry_base_seconds=args.retry_base_seconds,
+        retry_max_seconds=args.retry_max_seconds,
     )

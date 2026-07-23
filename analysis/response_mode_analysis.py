@@ -36,7 +36,7 @@ from dataset_generation.utils import (  # noqa: E402
 from evaluation.metrics import (  # noqa: E402
     default_input_path as default_model_response_input_path,
 )
-from OpenSafeIntent.project_config import (  # noqa: E402
+from project_config import (  # noqa: E402
     ANALYSIS_OUTPUT_DIR,
     DEFAULT_JUDGE_MODEL as CONFIG_DEFAULT_JUDGE_MODEL,
     DEFAULT_TEMPERATURE as CONFIG_DEFAULT_TEMPERATURE,
@@ -738,7 +738,7 @@ def parse_args() -> argparse.Namespace:
         "model_name",
         help=(
             "Model response file stem. Defaults input to "
-            "outputs/model_responses/<model_name>_scored.json."
+            "pilot_dataset/model_responses/<model_name>_scored.json."
         ),
     )
     parser.add_argument(

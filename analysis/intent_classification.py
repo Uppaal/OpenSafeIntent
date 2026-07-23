@@ -16,7 +16,7 @@ from dataset_generation.utils import (  # noqa: E402
     load_text,
     save_json,
 )
-from OpenSafeIntent.project_config import (  # noqa: E402
+from project_config import (  # noqa: E402
     ANALYSIS_OUTPUT_DIR,
     DEFAULT_GENERATOR_MODEL,
     RESPONSE_OUTPUT_DIR,

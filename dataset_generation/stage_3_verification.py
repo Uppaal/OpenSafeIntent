@@ -7,7 +7,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
-from OpenSafeIntent.project_config import DATASET_OUTPUT_DIR
+from project_config import DATASET_OUTPUT_DIR
 
 try:
     from .intent_verification import (

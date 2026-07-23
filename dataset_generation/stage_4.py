@@ -10,7 +10,7 @@ if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
 from llm_calls.api_models import get_api_responses_batch
-from OpenSafeIntent.project_config import (
+from project_config import (
     DATASET_OUTPUT_DIR,
     DEFAULT_GENERATOR_MODEL,
     DEFAULT_TEMPERATURE,
@@ -35,7 +35,7 @@ STAGE_3_VERIFICATION_INPUT_PATH = (
 )
 STAGE_4_OUTPUT_DIR = DATASET_OUTPUT_DIR / "stage_4"
 STAGE_4_OUTPUT_PATH = STAGE_4_OUTPUT_DIR / "stage_4_outputs.json"
-DEFAULT_MAX_COMPLETION_TOKENS = 1500
+DEFAULT_MAX_COMPLETION_TOKENS = 4096
 
 PROMPT_FIELDS = ("benign_prompt", "dual_use_prompt", "malicious_prompt")
 EXPECTED_DECISIONS = {
@@ -407,14 +407,14 @@ def generate_stage_4_dataset(
     )
 
     save_json(processed_rows, output_path)
-    print(f"Saved stage 4 outputs to: {Path(output_path).resolve()}")
+    print(f"Saved stage 4 pilot_dataset to: {Path(output_path).resolve()}")
     print_stage_4_stats(stats)
     return {"rows": processed_rows, "stats": dict(stats)}
 
 
 def parse_args():
     parser = argparse.ArgumentParser(
-        description="Repair incorrect prompt intents from stage 3 verification outputs."
+        description="Repair incorrect prompt intents from stage 3 verification pilot_dataset."
     )
     parser.add_argument("--input", type=Path, default=STAGE_3_VERIFICATION_INPUT_PATH)
     parser.add_argument("--output", type=Path, default=STAGE_4_OUTPUT_PATH)

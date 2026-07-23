@@ -10,7 +10,7 @@ if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
 from llm_calls.api_models import get_api_responses_batch
-from OpenSafeIntent.project_config import (
+from project_config import (
     DATASET_OUTPUT_DIR,
     DEFAULT_GENERATOR_MODEL,
     DEFAULT_TEMPERATURE,
@@ -23,7 +23,7 @@ except ImportError:
 
 
 PROMPT_DIR = REPO_ROOT / "prompts"
-PARAPHRASE_PROMPT_PATH = PROMPT_DIR / "metrics" / "paraphrase_generation.txt"
+PARAPHRASE_PROMPT_PATH = PROMPT_DIR / "data_generation" / "stage_6.txt"
 STAGE_5_OUTPUT_DIR = DATASET_OUTPUT_DIR / "stage_5"
 STAGE_5_DEDUPLICATED_INPUT_PATH = STAGE_5_OUTPUT_DIR / "stage_5_deduplicated.json"
 FINAL_OUTPUT_PATH = DATASET_OUTPUT_DIR / "dataset.json"

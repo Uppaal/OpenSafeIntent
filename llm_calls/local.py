@@ -6,7 +6,7 @@ from dataclasses import dataclass
 from typing import Any, Optional, Sequence
 from dataset_generation.utils import load_text
 from llm_calls.models import LOCAL_MODEL_CONFIGS
-from OpenSafeIntent.project_config import (
+from project_config import (
     DEFAULT_BATCH_SIZE as CONFIG_DEFAULT_BATCH_SIZE,
     DEFAULT_GPU_MEMORY_UTILIZATION as CONFIG_DEFAULT_GPU_MEMORY_UTILIZATION,
     DEFAULT_TENSOR_PARALLEL_SIZE as CONFIG_DEFAULT_TENSOR_PARALLEL_SIZE,

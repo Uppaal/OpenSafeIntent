@@ -18,7 +18,7 @@ from llm_calls.local import (
     build_local_generation_backend,
     safe_model_output_name,
 )
-from OpenSafeIntent.project_config import RESPONSE_OUTPUT_DIR
+from project_config import RESPONSE_OUTPUT_DIR
 
 
 FINAL_DATASET_PATH = REPO_ROOT / "dataset.json"

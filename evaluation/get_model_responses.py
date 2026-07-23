@@ -18,7 +18,7 @@ from llm_calls.api_models import (
     SUPPORTED_MODEL_NAMES,
     get_api_responses_batch,
 )
-from OpenSafeIntent.project_config import (
+from project_config import (
     MAX_COMPLETION_TOKENS as CONFIG_MAX_COMPLETION_TOKENS,
     RESPONSE_OUTPUT_DIR,
 )

@@ -17,7 +17,7 @@ from llm_calls.api_models import (
     SUPPORTED_MODEL_NAMES,
     get_api_responses_batch,
 )
-from OpenSafeIntent.project_config import (
+from project_config import (
     DATASET_OUTPUT_DIR,
     DEFAULT_GENERATOR_MODEL,
     DEFAULT_TEMPERATURE,
@@ -102,8 +102,8 @@ def report_stage_1_distributions(output_path=OUTPUT_PATH):
     }
 
 
-def iter_unsafe_prompts(dataset_name=DATASET_NAME, split=DEFAULT_SPLIT):
-    dataset = load_dataset(dataset_name, split=split, streaming=True)
+def iter_unsafe_prompts(dataset_name=DATASET_NAME, split=DEFAULT_SPLIT, streaming=False):
+    dataset = load_dataset(dataset_name, split=split, streaming=streaming)
     seen = set()
 
     for row in dataset:
@@ -173,6 +173,7 @@ def generate_stage_1_dataset(
     output_path=OUTPUT_PATH,
     dataset_name=DATASET_NAME,
     split=DEFAULT_SPLIT,
+    streaming=False,
     model_name=DEFAULT_MODEL_NAME,
     vertex_project_id=DEFAULT_VERTEX_PROJECT_ID,
     max_completion_tokens=MAX_COMPLETION_TOKENS,
@@ -186,7 +187,11 @@ def generate_stage_1_dataset(
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
     rows = []
-    prompt_iter = iter_unsafe_prompts(dataset_name=dataset_name, split=split)
+    prompt_iter = iter_unsafe_prompts(
+        dataset_name=dataset_name,
+        split=split,
+        streaming=streaming,
+    )
 
     for datapoint in tqdm(prompt_iter, total=num_datapoints, desc="Annotating prompts"):
         annotated = annotate_datapoint(
@@ -218,6 +223,11 @@ def parse_args():
     parser.add_argument("--output", type=Path, default=OUTPUT_PATH)
     parser.add_argument("--dataset", default=DATASET_NAME)
     parser.add_argument("--split", default=DEFAULT_SPLIT)
+    parser.add_argument(
+        "--streaming",
+        action="store_true",
+        help="Stream the source dataset instead of downloading/caching it first.",
+    )
     parser.add_argument(
         "--model",
         choices=SUPPORTED_MODEL_NAMES,
@@ -269,6 +279,7 @@ if __name__ == "__main__":
         output_path=args.output,
         dataset_name=args.dataset,
         split=args.split,
+        streaming=args.streaming,
         model_name=args.model,
         vertex_project_id=args.vertex_project_id,
         max_completion_tokens=args.max_completion_tokens,

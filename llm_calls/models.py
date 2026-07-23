@@ -33,6 +33,7 @@ class ModelConfig:
     model_id: str
     location: str
     request_model: Optional[str] = None
+    supports_temperature: bool = True
     gemini_thinking_level: Optional[GeminiThinkingLevel] = None
     gemini_thinking_budget: Optional[int] = None
 
@@ -203,7 +204,8 @@ DEFAULT_GENERATION_MODELS: Dict[str, ModelConfig] = {
     "claude_opus_4_8": ModelConfig(
         provider="vertex_claude",
         model_id="claude-opus-4-8",
-        location="us-east5",
+        location="global",
+        supports_temperature=False,
     ),
     "gemini_2_5_flash": ModelConfig(
         provider="vertex_gemini",
@@ -241,7 +243,7 @@ DEFAULT_GENERATION_MODELS: Dict[str, ModelConfig] = {
     "gemini_3_1_pro_preview": ModelConfig(
         provider="vertex_gemini",
         model_id="gemini-3.1-pro-preview",
-        location="us-central1",
+        location="global",
     ),
 }
 

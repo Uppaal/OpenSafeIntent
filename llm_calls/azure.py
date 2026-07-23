@@ -1,5 +1,5 @@
 from openai import AzureOpenAI
-from OpenSafeIntent.project_config import (
+from project_config import (
     CONFIG_PATH,
     DEFAULT_TEMPERATURE,
     DEFAULT_GENERATOR_MODEL,
